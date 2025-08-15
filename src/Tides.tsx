@@ -4,21 +4,25 @@
 //   return <Detail markdown="# Hello World" />;
 // }
 
-import { Detail } from "@raycast/api"; 
+import { Detail, List } from "@raycast/api"; 
 import { useEffect, useState } from "react";
 
-type WeatherData = {
+type WeatherData = { // Here as example for now
   temperature: string;
   wind: string;
   description: string;
 };
 
+type TidePoint = [string, number];
+
+type TidePointsList = TidePoint[];
+
 export default function Command() {
-  const [weather, setWeather] = useState<WeatherData | null>(null);
+  const [weather, setTidePointsList] = useState<TidePointsList | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch("https://goweather.xyz/weather/berlin")
+    fetch("https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?date=today&station=8413320&product=predictions&datum=STND&time_zone=lst_ldt&units=english&application=raycast_tides&format=json")
       .then((res) => {
         if (!res.ok) throw new Error("Network response was not ok");
         return res.json();
