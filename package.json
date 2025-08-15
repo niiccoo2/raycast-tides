@@ -1,16 +1,16 @@
 {
   "$schema": "https://www.raycast.com/schemas/extension.json",
-  "name": "hello",
-  "title": "Hello World",
-  "description": "Sample extension for Raycast",
-  "icon": "extension-icon.png",
-  "author": "samliu",
+  "name": "tides",
+  "title": "Tides",
+  "description": "Get information about your local tides",
+  "icon": "wave.png",
+  "author": "niiccoo2",
   "license": "MIT",
   "commands": [
     {
-      "name": "hello",
-      "title": "hello",
-      "description": "Say hello. This is a sample command!",
+      "name": "tides",
+      "title": "View Tides",
+      "description": "Get information about your local tides",
       "mode": "view"
     }
   ],
