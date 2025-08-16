@@ -1,24 +1,19 @@
-// import { Detail } from "@raycast/api";
-
-// export default function Command() {
-//   return <Detail markdown="# Hello World" />;
-// }
-
 import { Detail, List } from "@raycast/api"; 
 import { useEffect, useState } from "react";
-
-type WeatherData = { // Here as example for now
-  temperature: string;
-  wind: string;
-  description: string;
-};
 
 type TidePoint = [string, number];
 
 type TidePointsList = TidePoint[];
 
+type NOAAPredictionsResponse = {
+  predictions: Array<{
+    t: string;
+    v: string;
+  }>;
+};
+
 export default function Command() {
-  const [weather, setTidePointsList] = useState<TidePointsList | null>(null);
+  const [tides, setTides] = useState<TidePointsList | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -27,13 +22,14 @@ export default function Command() {
         if (!res.ok) throw new Error("Network response was not ok");
         return res.json();
       })
-      .then((data) => {
-        const weatherData = data as { temperature: string; wind: string; description: string };
-        setWeather({
-          temperature: weatherData.temperature,
-          wind: weatherData.wind,
-          description: weatherData.description,
+      .then((data: unknown) => {
+        const noaaData = data as NOAAPredictionsResponse;
+        
+        const tidePointsList: TidePointsList = noaaData.predictions.map((point) => {
+          return [point.t, parseFloat(point.v)];
         });
+ 
+        setTides(tidePointsList);
       })
       .catch((e) => setError(e.message));
   }, []);
@@ -42,13 +38,15 @@ export default function Command() {
     return <Detail markdown={`# Error\n${error}`} />;
   }
 
-  if (!weather) {
-    return <Detail markdown="Loading weather..." />;
+  if (!tides) {
+    return <Detail markdown="Loading tides..." />;
   }
+
+  const tideListMarkdown = tides.map(([time, value]) => `- ${time}: ${value} ft`).join("\n");
 
   return (
     <Detail
-      markdown={`# Berlin Weather\n\n**${weather.description}**\n\n- Temperature: ${weather.temperature}\n- Wind: ${weather.wind}`}
+      markdown={`# Boston Harbor Tide Predictions\n\n${tideListMarkdown}`}
     />
   );
 }
