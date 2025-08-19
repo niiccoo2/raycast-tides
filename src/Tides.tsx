@@ -12,6 +12,21 @@ type NOAAPredictionsResponse = {
   }>;
 };
 
+function findHighLowTides(tides: TidePointsList) {
+  if (tides.length === 0) return null;
+
+  let high = tides[0];
+  let low = tides[0];
+
+  for (const tide of tides) {
+    const [, value] = tide;
+    if (value > high[1]) high = tide;
+    if (value < low[1]) low = tide;
+  }
+
+  return { high, low };
+}
+
 export default function Command() {
   const [tides, setTides] = useState<TidePointsList | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -42,11 +57,26 @@ export default function Command() {
     return <Detail markdown="Loading tides..." />;
   }
 
-  const tideListMarkdown = tides.map(([time, value]) => `- ${time}: ${value} ft`).join("\n");
+  const highLow = findHighLowTides(tides);
+
+  if (!highLow) {
+    return <Detail markdown="No tide data available." />;
+  }
+
+  const { high, low } = highLow;
+
+  const tideListMarkdown = tides
+    .map(([time, value]) => `- ${time}: ${value} ft`)
+    .join("\n");
+
+  const highLowMarkdown = `
+  **High tide:** ${high[0]}\n
+  **Low tide:** ${low[0]}
+  `;
 
   return (
     <Detail
-      markdown={`# Boston Harbor Tide Predictions\n\n${tideListMarkdown}`}
+      markdown={`${highLowMarkdown}`}
     />
   );
 }
