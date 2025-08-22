@@ -1,8 +1,21 @@
-# Hello World
+### Raycast Tides
 
-This is a sample extension template. Please edit me!
+This is a simple extention that lets you view when high and low tide is at your favorite NOAA stations.
 
-# Quick start
+> [!NOTE]
+> Because this uses NOAA stations it only has data for US stations.
+
+### Example
+
+Open raycast and run the "View Tides" command.
+
+![View tides command](/images/view_tides_cmd.png)
+
+Then type "Boston" or "Boston, MA" to see the tides for Boston.
+
+![Boston tides](/images/boston_tides.png)
+
+### Quick start
 
 Install the require dependencies:
 
