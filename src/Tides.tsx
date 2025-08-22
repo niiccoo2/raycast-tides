@@ -403,7 +403,7 @@ export default function Command() {
   return (
     <List
       onSearchTextChange={setSearch}
-      searchBarPlaceholder="Enter NOAA station ID"
+      searchBarPlaceholder="Enter NOAA station name"
       isLoading={!tides && !error && !!search}
     >
       {/* If there’s an error, show it as one item */}
@@ -417,7 +417,7 @@ export default function Command() {
         const high = highLow.high[0].split(" ")[1]
         const low = highLow.low[0].split(" ")[1]
 
-        return ( // VVV high[0] is time, high[1] is height
+        return (
           <>
             <List.Item title="High Tide" subtitle={high} />
             <List.Item title="Low Tide" subtitle={low} />
