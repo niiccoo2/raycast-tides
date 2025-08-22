@@ -1,4 +1,5 @@
 import { List } from "@raycast/api";
+import { get } from "http";
 import { useEffect, useState } from "react";
 
 type TidePoint = [string, number];
@@ -26,10 +27,7 @@ function findHighLowTides(tides: TidePointsList) {
   return { high, low };
 }
 
-export default function Command() {
-  const [search, setSearch] = useState("");
-  const [tides, setTides] = useState<TidePointsList | null>(null);
-  const [error, setError] = useState<string | null>(null);
+function getStationId(search: string) {
   const stationMap: Record<string, string> = {
     "Dauphin Island, AL": "8735180",
     "Dog River Bridge, AL": "8735391",
@@ -363,7 +361,19 @@ export default function Command() {
     "Cherry Point, WA": "9449424",
     "Friday Harbor, WA": "9449880",
   }; // Example: "Dauphin Island, AL": "8735180",
-  const id = stationMap[Object.keys(stationMap).find(k => k.toLowerCase().split(",")[0] === search.toLowerCase() || k.toLowerCase() === search.toLowerCase()) || ""]; // || means OR
+  const id = stationMap[Object.keys(stationMap).find(k => 
+    k.toLowerCase().split(",")[0] === search.toLowerCase() || 
+    k.toLowerCase() === search.toLowerCase()) || ""]; // || means OR
+  
+    return id
+}
+
+export default function Command() {
+  const [search, setSearch] = useState("");
+  const [tides, setTides] = useState<TidePointsList | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  
+  const id = getStationId(search)
 
   useEffect(() => {
     if (!search) return;
