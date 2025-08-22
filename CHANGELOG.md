@@ -1,3 +1,5 @@
-# Weather Changelog
+# Tides Changelog
 
-## [Initial Version] - {PR_MERGE_DATE}
+## [Initial Version] - 08/21/2025
+
+First PR!
