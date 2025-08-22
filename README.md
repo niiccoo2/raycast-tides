@@ -42,7 +42,7 @@ Then it will get a response like this:
 
 ### Quick start
 
-Install the require dependencies:
+Install the required dependencies:
 
 ```bash
 npm install
