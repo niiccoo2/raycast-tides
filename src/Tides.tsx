@@ -361,11 +361,11 @@ function getStationId(search: string) {
     "Cherry Point, WA": "9449424",
     "Friday Harbor, WA": "9449880",
   }; // Example: "Dauphin Island, AL": "8735180",
-  const id = stationMap[Object.keys(stationMap).find(k => 
+  const key = Object.keys(stationMap).find(k => 
     k.toLowerCase().split(",")[0] === search.toLowerCase() || 
-    k.toLowerCase() === search.toLowerCase()) || ""]; // || means OR
+    k.toLowerCase() === search.toLowerCase()) || ""; // || means OR
   
-    return id
+  return key ? stationMap[key] : null;
 }
 
 export default function Command() {
@@ -415,11 +415,13 @@ export default function Command() {
         const highLow = findHighLowTides(tides);
         if (!highLow) return <List.Item title="No tide data available" />;
 
-        const { high, low } = highLow;
-        return (
+        const high = highLow.high[0].split(" ")[1]
+        const low = highLow.low[0].split(" ")[1]
+
+        return ( // VVV high[0] is time, high[1] is height
           <>
-            <List.Item title="High Tide" subtitle={`${high[1]} ft`} />
-            <List.Item title="Low Tide" subtitle={`${low[1]} ft`} />
+            <List.Item title="High Tide" subtitle={high} />
+            <List.Item title="Low Tide" subtitle={low} />
           </>
         );
       })()}
