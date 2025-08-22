@@ -363,7 +363,7 @@ function getStationId(search: string) {
   const key =
     Object.keys(stationMap).find(
       (k) => k.toLowerCase().split(",")[0] === search.toLowerCase() || k.toLowerCase() === search.toLowerCase(),
-    ) || ""; // || means OR
+    ) || ""; // || means or
 
   return key ? stationMap[key] : null;
 }
