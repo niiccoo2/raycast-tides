@@ -3,7 +3,7 @@
 This is a simple extention that lets you view when high and low tide is at your favorite NOAA stations.
 
 > [!NOTE]
-> Because this uses NOAA stations it only has data for US stations.
+> Because this uses NOAA stations it only has data for US stations. Find a list of stations [here](https://tidesandcurrents.noaa.gov/stations.html).
 
 ### Example
 
