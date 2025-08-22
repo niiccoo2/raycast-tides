@@ -376,25 +376,25 @@ export default function Command() {
   const id = getStationId(search);
 
   useEffect(() => {
-  if (!search || !id) return; // don't fetch if no search or id
+    if (!search || !id) return; // don't fetch if no search or id
 
-  fetch(
-    `https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?date=today&station=${id}&product=predictions&datum=STND&time_zone=lst_ldt&units=english&application=raycast_tides&format=json`,
-  )
-    .then((res) => {
-      if (!res.ok) throw new Error("Network response was not ok");
-      return res.json();
-    })
-    .then((data: unknown) => {
-      const noaaData = data as NOAAPredictionsResponse;
-      const tidePointsList: TidePointsList = noaaData.predictions.map((point) => [point.t, parseFloat(point.v)]);
-      setTides(tidePointsList);
-      setError(null); // clear any old error
-    })
-    .catch((e) => {
-      setError(e.message);
-      setTides(null);
-    });
+    fetch(
+      `https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?date=today&station=${id}&product=predictions&datum=STND&time_zone=lst_ldt&units=english&application=raycast_tides&format=json`,
+    )
+      .then((res) => {
+        if (!res.ok) throw new Error("Network response was not ok");
+        return res.json();
+      })
+      .then((data: unknown) => {
+        const noaaData = data as NOAAPredictionsResponse;
+        const tidePointsList: TidePointsList = noaaData.predictions.map((point) => [point.t, parseFloat(point.v)]);
+        setTides(tidePointsList);
+        setError(null); // clear any old error
+      })
+      .catch((e) => {
+        setError(e.message);
+        setTides(null);
+      });
   }, [search, id]);
 
   return (
