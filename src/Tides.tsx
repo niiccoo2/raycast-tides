@@ -362,8 +362,8 @@ export default function Command() {
     "Seattle, WA": "9447130",
     "Cherry Point, WA": "9449424",
     "Friday Harbor, WA": "9449880",
-  };
-  const id = stationMap[Object.keys(stationMap).find(k => k.toLowerCase() === search.toLowerCase()) || ""];
+  }; // Example: "Dauphin Island, AL": "8735180",
+  const id = stationMap[Object.keys(stationMap).find(k => k.toLowerCase().split(",")[0] === search.toLowerCase() || k.toLowerCase() === search.toLowerCase()) || ""]; // || means OR
 
   useEffect(() => {
     if (!search) return;
