@@ -360,10 +360,11 @@ function getStationId(search: string) {
     "Cherry Point, WA": "9449424",
     "Friday Harbor, WA": "9449880",
   }; // Example: "Dauphin Island, AL": "8735180",
-  const key = Object.keys(stationMap).find(k => 
-    k.toLowerCase().split(",")[0] === search.toLowerCase() || 
-    k.toLowerCase() === search.toLowerCase()) || ""; // || means OR
-  
+  const key =
+    Object.keys(stationMap).find(
+      (k) => k.toLowerCase().split(",")[0] === search.toLowerCase() || k.toLowerCase() === search.toLowerCase(),
+    ) || ""; // || means OR
+
   return key ? stationMap[key] : null;
 }
 
@@ -371,14 +372,15 @@ export default function Command() {
   const [search, setSearch] = useState("");
   const [tides, setTides] = useState<TidePointsList | null>(null);
   const [error, setError] = useState<string | null>(null);
-  
-  const id = getStationId(search)
+
+  const id = getStationId(search);
 
   useEffect(() => {
     if (!search) return;
 
-    fetch( // Replace ${id} with ${search} if you want to type the id
-      `https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?date=today&station=${id}&product=predictions&datum=STND&time_zone=lst_ldt&units=english&application=raycast_tides&format=json`
+    fetch(
+      // Replace ${id} with ${search} if you want to type the id
+      `https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?date=today&station=${id}&product=predictions&datum=STND&time_zone=lst_ldt&units=english&application=raycast_tides&format=json`,
     )
       .then((res) => {
         if (!res.ok) throw new Error("Network response was not ok");
@@ -387,9 +389,7 @@ export default function Command() {
       .then((data: unknown) => {
         const noaaData = data as NOAAPredictionsResponse;
 
-        const tidePointsList: TidePointsList = noaaData.predictions.map(
-          (point) => [point.t, parseFloat(point.v)]
-        );
+        const tidePointsList: TidePointsList = noaaData.predictions.map((point) => [point.t, parseFloat(point.v)]);
 
         setTides(tidePointsList);
         setError(null); // clear any old error
@@ -410,20 +410,22 @@ export default function Command() {
       {error && <List.Item title="Error" subtitle={error} />}
 
       {/* If no error and we have tide data, show results */}
-      {tides && !error && (() => {
-        const highLow = findHighLowTides(tides);
-        if (!highLow) return <List.Item title="No tide data available" />;
+      {tides &&
+        !error &&
+        (() => {
+          const highLow = findHighLowTides(tides);
+          if (!highLow) return <List.Item title="No tide data available" />;
 
-        const high = highLow.high[0].split(" ")[1]
-        const low = highLow.low[0].split(" ")[1]
+          const high = highLow.high[0].split(" ")[1];
+          const low = highLow.low[0].split(" ")[1];
 
-        return (
-          <>
-            <List.Item title="High Tide" subtitle={high} />
-            <List.Item title="Low Tide" subtitle={low} />
-          </>
-        );
-      })()}
+          return (
+            <>
+              <List.Item title="High Tide" subtitle={high} />
+              <List.Item title="Low Tide" subtitle={low} />
+            </>
+          );
+        })()}
     </List>
   );
 }
