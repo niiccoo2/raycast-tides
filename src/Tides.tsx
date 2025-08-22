@@ -1,5 +1,4 @@
 import { List } from "@raycast/api";
-import { get } from "http";
 import { useEffect, useState } from "react";
 
 type TidePoint = [string, number];
